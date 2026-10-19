@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vighnesh Kunjir | Software Developer</title>
+<meta name="description" content="Vighnesh Kunjir (Vk), software developer in Pune working across full-stack and data science. M.Tech Data Science and Analytics, MIT-WPU. Projects in ocean forecasting, speech control, machine learning, reinforcement learning and React.">
+<meta name="theme-color" content="#dde3df" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#262b29" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Vighnesh Kunjir | Software Developer">
+<meta property="og:description" content="Full-stack and data science work: ocean forecasting, voice-controlled Tetris, food waste prediction, a reinforcement learning agent and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vighneshkunjir.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23dde3df'/%3E%3Ctext x='32' y='42' font-family='system-ui,sans-serif' font-weight='800' font-size='28' text-anchor='middle' fill='%231d2622'%3EVk%3C/text%3E%3Ccircle cx='50' cy='14' r='5' fill='%23ff4f1a'/%3E%3C/svg%3E">
+<script>
+  try{ var t = localStorage.getItem("vk-theme"); if(t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); }catch(e){}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#dde3df;
+  --hi:#fbfffc;
+  --lo:#b3bcb6;
+  --ink:#1d2622;
+  --ink-2:#46514b;
+  --led:#ff4f1a;
+  --accent-ink:#a8340c;
+  --led-off:#c3cbc6;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --raise:9px 9px 20px var(--lo), -9px -9px 20px var(--hi);
+  --raise-sm:5px 5px 11px var(--lo), -5px -5px 11px var(--hi);
+  --inset:inset 7px 7px 14px var(--lo), inset -7px -7px 14px var(--hi);
+  --inset-sm:inset 3px 3px 7px var(--lo), inset -3px -3px 7px var(--hi);
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#262b29; --hi:#333a37; --lo:#181c1a;
+    --ink:#e6ece8; --ink-2:#a7b1ab;
+    --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#262b29; --hi:#333a37; --lo:#181c1a;
+  --ink:#e6ece8; --ink-2:#a7b1ab;
+  --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scrollbar-color:var(--lo) var(--ground)}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--f-body); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  caret-color:var(--led);
+}
+::selection{background:var(--led); color:#fff}
+a{color:var(--accent-ink); text-underline-offset:4px; text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--led); outline-offset:4px}
+h1,h2,h3{margin:0; text-wrap:balance; font-family:var(--f-display); font-weight:700; letter-spacing:-.02em; line-height:1.05}
+p{margin:0}
+.wrap{max-width:1180px; margin:0 auto; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+@media (min-width:700px){.wrap{padding-left:32px; padding-right:32px}}
+.skip{position:absolute; left:16px; top:-60px; z-index:50; background:var(--ground); color:var(--ink); padding:10px 16px; border-radius:12px; box-shadow:var(--raise-sm)}
+.skip:focus{top:12px}
+
+/* Shared hardware parts */
+.led{display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--led-off); box-shadow:inset 1px 1px 2px rgba(0,0,0,.25); flex:none; transition:background .25s, box-shadow .25s}
+.lit .led, .led.on, .pkey[aria-pressed="true"] .led, .sk[aria-pressed="true"] .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55)}
+.key{
+  -webkit-appearance:none; appearance:none; border:0; cursor:pointer;
+  font:inherit; color:var(--ink); background:var(--ground);
+  border-radius:16px; box-shadow:var(--raise-sm);
+  transition:box-shadow .22s var(--ease), transform .22s var(--ease), color .2s;
+  text-decoration:none;
+}
+.key:hover{box-shadow:7px 7px 14px var(--lo), -7px -7px 14px var(--hi)}
+.key:active, .key[aria-pressed="true"], .key.on{box-shadow:var(--inset-sm); transform:translateY(2px); transition-duration:.12s}
+.icon{width:18px; height:18px; flex:none}
+
+/* Rail */
+.rail{padding-top:max(18px, env(safe-area-inset-top,0px))}
+.rail .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.mono-key{display:grid; place-items:center; width:52px; height:52px; font:800 20px/1 var(--f-display); letter-spacing:-.03em; border-radius:16px}
+.nav{display:flex; gap:10px; list-style:none; margin:0; padding:0}
+.nav a{display:block; padding:10px 18px; border-radius:999px; font-size:15px; font-weight:500; color:var(--ink-2)}
+.nav a:hover{color:var(--ink)}
+.nav a.on{color:var(--ink)}
+.rocker{display:flex; align-items:center; gap:10px; background:none; border:0; padding:6px; cursor:pointer; color:var(--ink-2); font:500 14px var(--f-body)}
+.rocker .track{position:relative; width:58px; height:30px; border-radius:999px; box-shadow:var(--inset-sm); flex:none}
+.rocker .knob{position:absolute; top:4px; left:4px; width:22px; height:22px; border-radius:50%; background:var(--ground); box-shadow:3px 3px 6px var(--lo), -3px -3px 6px var(--hi); transition:transform .3s var(--ease); display:grid; place-items:center}
+.rocker[aria-checked="true"] .knob{transform:translateX(28px)}
+.rocker .knob svg{width:12px; height:12px}
+@media (max-width:760px){.nav{display:none} .rocker .lbl{display:none}}
+
+/* Console (first viewport) */
+.console{padding-block:22px 40px}
+.slab{
+  border-radius:36px; background:var(--ground); box-shadow:var(--raise);
+  padding:clamp(20px, 4vw, 48px);
+  display:grid; gap:clamp(20px, 2.6vw, 30px);
+}
+.id{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px 40px; align-items:end}
+.id h1{grid-column:1/-1; font-size:clamp(44px, 8vw, 96px); font-weight:800; letter-spacing:-.035em; line-height:.95; font-variation-settings:"opsz" 96}
+.role{max-width:58ch; color:var(--ink-2); font-size:clamp(16px, 1.5vw, 19px)}
+.role strong{color:var(--ink); font-weight:600}
+.status{display:inline-flex; align-items:center; gap:10px; margin-top:12px; font-size:15px; color:var(--ink)}
+.reach{display:flex; gap:12px; flex-wrap:wrap}
+.reach .key{display:inline-flex; align-items:center; gap:10px; padding:13px 18px; font-weight:600; font-size:15px}
+@media (max-width:820px){.id{grid-template-columns:1fr}}
+
+.well{
+  border-radius:24px; box-shadow:var(--inset); padding:clamp(18px, 2.6vw, 30px);
+  background:color-mix(in srgb, var(--ground) 92%, #6f8f7c);
+  min-height:208px; display:grid; align-content:start; gap:14px; min-width:0;
+}
+.well.redraw .screen{animation:redraw .42s var(--ease)}
+@keyframes redraw{from{opacity:.15; filter:blur(4px); transform:translateY(3px)} to{opacity:1; filter:none; transform:none}}
+.screen{display:grid; gap:14px; min-width:0}
+.screen-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap}
+.screen h2{font-size:clamp(24px, 2.8vw, 34px)}
+.screen .kind{font-family:var(--f-mono); font-size:13px; color:var(--ink-2)}
+.screen > p{color:var(--ink-2); max-width:70ch}
+.readout{display:grid; gap:6px; margin:0; padding:0; list-style:none; font-family:var(--f-mono); font-size:14px; font-variant-numeric:tabular-nums}
+.readout li{display:grid; grid-template-columns:110px minmax(0,1fr); gap:12px}
+.readout b{font-weight:500; color:var(--ink-2)}
+.screen-links{display:flex; gap:22px; flex-wrap:wrap; font-weight:600; font-size:15px}
+.screen-links a{display:inline-flex; align-items:center; gap:6px}
+.range{display:flex; flex-wrap:wrap; gap:8px 22px; margin:0; padding:0; list-style:none; font-family:var(--f-mono); font-size:14px; color:var(--ink)}
+.range li{display:inline-flex; align-items:center; gap:8px}
+@media (max-width:520px){
+  .readout li{grid-template-columns:1fr; gap:0} .readout li + li{margin-top:6px}
+  .reach{gap:10px; flex-wrap:nowrap}
+  .reach .key{flex:1 1 0; justify-content:center; gap:7px; padding:12px 8px; font-size:14px}
+  .reach .icon{width:16px; height:16px}
+  .range{display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; font-size:12.5px}
+  .well{min-height:0; order:3}
+  .keys{order:2}
+  .status{font-size:14px}
+}
+
+.keys{display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:16px}
+.pkey{display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:16px; text-align:left; min-height:104px; border-radius:20px}
+.pkey .led{align-self:flex-end}
+.pkey .k-name{font:700 17px/1.15 var(--f-display); letter-spacing:-.01em; margin-top:auto}
+.pkey .k-kind{font-family:var(--f-mono); font-size:12px; color:var(--ink-2); margin-top:-6px}
+@media (max-width:980px){.keys{grid-template-columns:repeat(3, minmax(0,1fr))}}
+@media (max-width:520px){.keys{grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px} .pkey{min-height:92px; padding:14px}}
+
+/* Sections */
+section{scroll-margin-top:24px}
+.sec{padding-block:clamp(64px, 9vw, 112px) 0}
+.sec-head{display:grid; gap:12px; margin-bottom:clamp(28px, 4vw, 44px); max-width:62ch}
+.sec-head h2{font-size:clamp(34px, 5vw, 60px); letter-spacing:-.03em}
+.sec-head p{color:var(--ink-2)}
+
+/* Project plates */
+.plates{display:grid; gap:0}
+.plate{
+  border-radius:28px; padding:clamp(26px, 3.4vw, 40px) clamp(18px, 3vw, 36px);
+  display:grid; grid-template-columns:minmax(0,15rem) minmax(0,1fr) minmax(0,13rem); gap:clamp(18px, 3vw, 40px);
+  transition:opacity .35s var(--ease), box-shadow .35s var(--ease);
+}
+.plate + .plate{background:linear-gradient(var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) center top / calc(100% - 56px) 2px no-repeat}
+.plate.dim{opacity:.86}
+.plate.lit{box-shadow:var(--inset)}
+.plate-id{display:flex; flex-direction:column; gap:10px; min-width:0}
+.plate-id .meta{display:flex; align-items:center; gap:10px; font-family:var(--f-mono); font-size:13px; color:var(--ink-2)}
+.plate-id .meta .led{order:-1}
+.plate h3{font-size:clamp(26px, 2.6vw, 32px)}
+.plate-body{display:grid; gap:14px; min-width:0; align-content:start}
+.plate-body > p{color:var(--ink); max-width:65ch}
+.facts{margin:0; padding:0; list-style:none; display:grid; gap:9px}
+.facts li{position:relative; padding-left:22px; color:var(--ink-2); max-width:68ch}
+.facts li::before{content:""; position:absolute; left:2px; top:.62em; width:8px; height:2px; background:var(--ink-2)}
+.plate-side{display:flex; flex-direction:column; gap:16px; min-width:0}
+.stack{margin:0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:4px 0; font-family:var(--f-mono); font-size:13px; color:var(--ink)}
+.stack li{display:inline-flex; align-items:center}
+.stack li + li::before{content:""; width:4px; height:4px; border-radius:50%; background:var(--ink-2); margin:0 10px}
+.plate-links{display:flex; flex-direction:column; gap:10px; margin-top:auto}
+.plate-links a{display:inline-flex; align-items:center; gap:8px; justify-content:center; padding:11px 16px; font-weight:600; font-size:14.5px; color:var(--ink)}
+.cmd{font-family:var(--f-mono); font-size:12.5px; padding:14px 12px; border-block:1px solid var(--lo); white-space:pre-wrap; overflow-wrap:anywhere; color:var(--ink); margin:0}
+.cmd .c{color:var(--ink-2)}
+@media (max-width:980px){.plate{grid-template-columns:minmax(0,1fr) minmax(0,13rem)} .plate-id{grid-column:1/-1}}
+@media (max-width:640px){.plate{grid-template-columns:1fr} .plate-links{flex-direction:row; flex-wrap:wrap}}
+
+/* Skills */
+.banks{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:0}
+.bank{padding:6px 24px 22px; display:grid; gap:16px; align-content:start; min-width:0}
+.bank:first-child{padding-left:0}
+.bank + .bank{background:linear-gradient(90deg, var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) left top / 2px 100% no-repeat}
+.bank h3{font-size:19px; letter-spacing:-.01em; color:var(--ink); text-shadow:0 1px 0 var(--hi)}
+.bank .list{display:flex; flex-wrap:wrap; gap:10px}
+.sk{display:inline-flex; align-items:center; gap:8px; padding:9px 13px; border-radius:12px; font-size:14.5px; font-weight:500}
+.skill-note{margin-top:24px; min-height:1.6em; color:var(--ink-2)}
+.skill-note b{color:var(--ink); font-weight:600}
+@media (max-width:1000px){
+  .banks{grid-template-columns:repeat(2, minmax(0,1fr)); row-gap:24px}
+  .bank:nth-child(3){padding-left:0; background:none}
+}
+@media (max-width:520px){
+  .banks{grid-template-columns:1fr; row-gap:0}
+  .bank, .bank + .bank{padding:22px 0; background:linear-gradient(var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) left top / 100% 2px no-repeat}
+  .bank:first-child{background:none; padding-top:0}
+}
+
+/* Path */
+.path{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:0}
+.stop{padding:6px 28px 6px; display:grid; gap:8px; align-content:start; min-width:0}
+.stop:first-child{padding-left:0}
+.stop + .stop{background:linear-gradient(90deg, var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) left top / 2px 100% no-repeat}
+.stop .when{font-family:var(--f-mono); font-size:13px; color:var(--ink-2)}
+.stop h3{font-size:22px; letter-spacing:-.01em; line-height:1.15}
+.stop p{color:var(--ink-2)}
+@media (max-width:860px){
+  .path{grid-template-columns:1fr}
+  .stop, .stop + .stop{padding:22px 0; background:linear-gradient(var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) left top / 100% 2px no-repeat}
+  .stop:first-child{background:none; padding-top:0}
+}
+
+/* Contact */
+.contact{padding-bottom:clamp(48px, 7vw, 88px)}
+.contact .slab{gap:28px; box-shadow:none; border-radius:0; padding-inline:0; background:linear-gradient(var(--lo) 0 1px, var(--hi) 1px 2px, transparent 2px) left top / 100% 2px no-repeat}
+.contact h2{font-size:clamp(36px, 5.6vw, 68px); letter-spacing:-.03em; max-width:16ch}
+.contact .slab > p{color:var(--ink-2); max-width:58ch}
+.lines{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px}
+.line{display:flex; align-items:center; gap:16px; padding:20px 22px; border-radius:22px; min-width:0}
+.line .txt{display:grid; gap:2px; min-width:0}
+.line .t1{font-weight:600}
+.line .t2{font-family:var(--f-mono); font-size:13px; color:var(--ink-2); overflow-wrap:anywhere}
+.line .icon{width:24px; height:24px}
+.copy-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.copy-row .key{display:inline-flex; align-items:center; gap:10px; padding:11px 16px; font-weight:600; font-size:14.5px}
+.toast{font-family:var(--f-mono); font-size:13px; color:var(--accent-ink)}
+@media (max-width:860px){.lines{grid-template-columns:1fr}}
+
+footer{padding-block:0 40px; color:var(--ink-2); font-size:14px}
+footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *, *::before, *::after{transition-duration:.01ms !important; animation:none !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rail">
+  <div class="wrap">
+    <a class="key mono-key" href="#top" aria-label="Vighnesh Kunjir, back to top">Vk</a>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a class="key" href="#work">Work</a></li>
+        <li><a class="key" href="#skills">Skills</a></li>
+        <li><a class="key" href="#path">Path</a></li>
+        <li><a class="key" href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="rocker" id="theme" type="button" role="switch" aria-checked="false">
+      <span class="lbl">Dark mode</span>
+      <span class="track" aria-hidden="true"><span class="knob">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="console" id="top" aria-label="Introduction">
+    <div class="wrap">
+      <div class="slab">
+        <div class="id">
+          <h1>Vighnesh Kunjir</h1>
+          <div>
+            <p class="role">Software developer in Pune, working across <strong>full-stack</strong> and <strong>data science</strong>. Formerly a full-stack developer, now doing an M.Tech in Data Science and Analytics at MIT-WPU (2025 to 2027). I like building the whole thing: the data, the model and the interface people use.</p>
+            <p class="status"><span class="led on" aria-hidden="true"></span>Open to software developer, full-stack and data roles</p>
+          </div>
+          <div class="reach">
+            <a class="key" href="mailto:vighneshkunjir1233@gmail.com">
+              <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m3 5.5 7 5.5 7-5.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Email
+            </a>
+            <a class="key" href="https://www.linkedin.com/in/vighnesh-kunjir-1b7a3a27a" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M4.2 7.4h2.9V16H4.2V7.4Zm1.5-4.3a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4ZM8.9 7.4h2.8v1.2h.04c.39-.74 1.34-1.5 2.76-1.5 2.95 0 3.5 1.94 3.5 4.46V16h-2.9v-3.9c0-.93-.02-2.13-1.3-2.13-1.3 0-1.5 1.01-1.5 2.06V16H8.9V7.4Z"/></svg>LinkedIn
+            </a>
+            <a class="key" href="https://github.com/VighneshKunjir" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M10 1.8a8.2 8.2 0 0 0-2.6 16c.4.07.56-.18.56-.4v-1.4c-2.28.5-2.76-1.1-2.76-1.1-.37-.95-.91-1.2-.91-1.2-.75-.51.06-.5.06-.5.82.06 1.26.85 1.26.85.73 1.26 1.92.9 2.39.68.07-.53.29-.9.52-1.1-1.82-.2-3.74-.91-3.74-4.06 0-.9.32-1.63.85-2.2-.09-.21-.37-1.04.08-2.17 0 0 .69-.22 2.25.84a7.8 7.8 0 0 1 4.1 0c1.56-1.06 2.25-.84 2.25-.84.45 1.13.17 1.96.08 2.17.53.57.85 1.3.85 2.2 0 3.16-1.92 3.85-3.75 4.05.3.25.56.75.56 1.51v2.24c0 .22.15.48.57.4A8.2 8.2 0 0 0 10 1.8Z"/></svg>GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="well" id="well" aria-live="polite">
+          <div class="screen" id="screen">
+            <div class="screen-head">
+              <h2>Six builds, six different problems.</h2>
+              <span class="kind">2024 to 2026</span>
+            </div>
+            <ul class="range">
+              <li><span class="led" aria-hidden="true"></span>Ocean forecasting</li>
+              <li><span class="led" aria-hidden="true"></span>Voice control</li>
+              <li><span class="led" aria-hidden="true"></span>Waste prediction</li>
+              <li><span class="led" aria-hidden="true"></span>Reinforcement learning</li>
+              <li><span class="led" aria-hidden="true"></span>React front end</li>
+              <li><span class="led" aria-hidden="true"></span>Technical writing</li>
+            </ul>
+            <p>Press a project key to read about it.</p>
+          </div>
+        </div>
+
+        <div class="keys" role="group" aria-label="Projects">
+          <button class="key pkey" type="button" aria-pressed="false" data-p="argocast"><span class="led" aria-hidden="true"></span><span class="k-name">ArgoCast</span><span class="k-kind">Ocean ML</span></button>
+          <button class="key pkey" type="button" aria-pressed="false" data-p="tetris"><span class="led" aria-hidden="true"></span><span class="k-name">Voice Tetris</span><span class="k-kind">Speech</span></button>
+          <button class="key pkey" type="button" aria-pressed="false" data-p="food"><span class="led" aria-hidden="true"></span><span class="k-name">Food Waste Prediction</span><span class="k-kind">Applied ML</span></button>
+          <button class="key pkey" type="button" aria-pressed="false" data-p="snake"><span class="led" aria-hidden="true"></span><span class="k-name">DQN Snake</span><span class="k-kind">RL agent</span></button>
+          <button class="key pkey" type="button" aria-pressed="false" data-p="ecom"><span class="led" aria-hidden="true"></span><span class="k-name">E-Commerce Page</span><span class="k-kind">React</span></button>
+          <button class="key pkey" type="button" aria-pressed="false" data-p="guides"><span class="led" aria-hidden="true"></span><span class="k-name">PC Gaming Guides</span><span class="k-kind">Writing</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Projects</h2>
+        <p>Machine learning, real-time systems, front-end work and writing. The details below come from each project's own repository.</p>
+      </div>
+
+      <div class="plates">
+        <article class="plate" id="p-argocast" data-skills="Python|Machine learning|Time series|LSTM / GRU / Transformer|FastAPI|React">
+          <div class="plate-id">
+            <h3>ArgoCast</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>2026 &middot; Research</span>
+          </div>
+          <div class="plate-body">
+            <p>Forecasts the next temperature and salinity profile of an Argo ocean float in the Arabian Sea, about 10 days ahead, from its three most recent profiles. Each forecast comes with a physics check, calibrated uncertainty, an explanation and links to the real data behind it.</p>
+            <ul class="facts">
+              <li>Physics-informed Bi-LSTM trained with a TEOS-10 stability penalty, so it almost never predicts heavier water sitting above lighter water: 0.02 to 0.04% unstable forecasts, against 0.8 to 12.3% for the other learned models.</li>
+              <li>Benchmarked against 12 baselines on 36,164 quality-controlled profiles from 321 floats, staying within 0.005 &deg;C of the most accurate model.</li>
+              <li>Monte Carlo dropout intervals, recalibrated so the 95% band really covers about 95% of observations.</li>
+              <li>FastAPI back end and a React 19 app with forecast, map, explanation and benchmark views, plus a grounded chat that also works offline.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <ul class="stack"><li>Python</li><li>PyTorch</li><li>FastAPI</li><li>React 19</li><li>TypeScript</li><li>TEOS-10</li></ul>
+            <div class="plate-links">
+              <a class="key" href="https://github.com/VighneshKunjir/ArgoCast" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://doi.org/10.5281/zenodo.23422343" target="_blank" rel="noopener">Zenodo archive<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="plate" id="p-tetris" data-skills="Python">
+          <div class="plate-id">
+            <h3>Voice Tetris</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>2026 &middot; Real-time</span>
+          </div>
+          <div class="plate-body">
+            <p>Play Tetris with your voice. Spoken words like "left", "spin" and "drop" become key presses in real time, using speech recognition that runs fully offline on your own machine.</p>
+            <ul class="facts">
+              <li>About 50 to 80 ms from spoken word to key press, using streaming recognition with Vosk.</li>
+              <li>Fuzzy matching handles common mishearings, for example "write" is read as "right"; saying "left left left" fires three moves.</li>
+              <li>Calibrates itself to your microphone and background noise. Works with the built-in Pygame Tetris or any Tetris game that uses the keyboard.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <ul class="stack"><li>Python</li><li>Vosk</li><li>Pygame</li><li>pynput</li><li>NumPy</li></ul>
+            <div class="plate-links">
+              <a class="key" href="https://github.com/VighneshKunjir/Voice-Tetris" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="plate" id="p-food" data-skills="Python|pandas|Machine learning|Time series">
+          <div class="plate-id">
+            <h3>Food Waste Prediction System</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>2025 &middot; Applied ML</span>
+          </div>
+          <div class="plate-body">
+            <p>Predicts how much food a restaurant will waste so it can plan quantities and throw less away. It trains a range of models on the restaurant's history, compares them, and keeps the best one.</p>
+            <ul class="facts">
+              <li>Finds models automatically: linear and tree models, random forest, XGBoost, LightGBM, CatBoost, an optional PyTorch network and an ensemble. Add a model file and it is picked up with no code changes.</li>
+              <li>7-day forecasts with confidence intervals, plus weather and special-event adjustments.</li>
+              <li>Manages several restaurants, each with its own models, and adapts most CSV layouts to one standard format.</li>
+              <li>Uses the GPU when one is available and falls back to the CPU otherwise.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <ul class="stack"><li>Python</li><li>scikit-learn</li><li>XGBoost</li><li>LightGBM</li><li>CatBoost</li><li>PyTorch</li><li>pandas</li></ul>
+            <div class="plate-links">
+              <a class="key" href="https://github.com/VighneshKunjir/Food-Waste-Prediction-System" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="plate" id="p-snake" data-skills="Python|Machine learning">
+          <div class="plate-id">
+            <h3>DQN Snake Game AI</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>2026 &middot; Reinforcement learning</span>
+          </div>
+          <div class="plate-body">
+            <p>An agent that teaches itself to play Snake by trial and error. It gets a reward for eating food and a penalty for crashing, and over many games it learns which moves pay off.</p>
+            <ul class="facts">
+              <li>Deep Q-Network in PyTorch with experience replay and a separate target network to keep training stable.</li>
+              <li>Sees the game as 11 simple signals: danger ahead or to either side, current direction, and where the food is.</li>
+              <li>Evaluated against a random agent and a simple rule-based agent.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <ul class="stack"><li>Python</li><li>PyTorch</li><li>Pygame</li><li>NumPy</li></ul>
+            <div class="plate-links">
+              <a class="key" href="https://github.com/VighneshKunjir/RL-DQN-Snake-game-ai" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="plate" id="p-ecom" data-skills="JavaScript|React|React Router|HTML|CSS">
+          <div class="plate-id">
+            <h3>E-Commerce Landing Page</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>2024 &middot; Front end</span>
+          </div>
+          <div class="plate-body">
+            <p>A responsive storefront landing page with client-side routing, so moving between pages happens in the browser without full reloads.</p>
+            <ul class="facts">
+              <li>Built with React and React Router on Create React App.</li>
+              <li>Component-based layout that adapts from phone to desktop.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <ul class="stack"><li>React</li><li>React Router</li><li>JavaScript</li><li>CSS</li></ul>
+            <div class="plate-links">
+              <a class="key" href="https://github.com/VighneshKunjir/E-commerce-Landing-page" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="plate" id="p-guides" data-skills="">
+          <div class="plate-id">
+            <h3>PC Gaming Technical Guides</h3>
+            <span class="meta"><span class="led" aria-hidden="true"></span>Ongoing &middot; Writing</span>
+          </div>
+          <div class="plate-body">
+            <p>I help PC players get games downloaded, set up and running, mostly multiplayer and online co-op titles. Safety comes first, so people stay clear of malware, viruses and phishing along the way.</p>
+            <ul class="facts">
+              <li>Walkthroughs for downloading, installing and setting up games, plus fixes when a game will not launch or connect.</li>
+              <li>Co-op and multiplayer setup guides, for example Split Fiction and It Takes Two.</li>
+              <li>How to spot unsafe files and fake download pages before they cause damage.</li>
+              <li>House style: warnings first, numbered steps, commands you can copy and paste.</li>
+            </ul>
+          </div>
+          <div class="plate-side">
+            <pre class="cmd" aria-label="Example of the guide format"><span class="c">Warning: read every step before you start</span>
+1. Check your PC meets the requirements
+2. Follow the setup steps in order
+3. Test the game before inviting friends</pre>
+            <div class="plate-links">
+              <a class="key" href="https://discord.gg/7Ms7JCqw2" target="_blank" rel="noopener">Join the Discord<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Skills</h2>
+        <p>Press a skill to light up the projects that use it.</p>
+      </div>
+      <div class="banks" id="banks"></div>
+      <p class="skill-note" id="skillNote" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="sec" id="path">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Path so far</h2>
+      </div>
+      <div class="path">
+        <div class="stop">
+          <h3>M.Tech, Data Science and Analytics</h3>
+          <span class="when">2025 to 2027 &middot; now</span>
+          <p>MIT World Peace University (MIT-WPU), Pune.</p>
+        </div>
+        <div class="stop">
+          <h3>Full-stack developer</h3>
+          <span class="when">Industry</span>
+          <p>Built web applications across the front end and the back end. Also comfortable with data analyst tools.</p>
+        </div>
+        <div class="stop">
+          <h3>B.E., Computer Science and Engineering</h3>
+          <span class="when">Degree</span>
+          <p>Foundations in programming, data structures, databases and software engineering.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec contact" id="contact">
+    <div class="wrap">
+      <div class="slab">
+        <h2>Hiring for full-stack or data work? Let's talk.</h2>
+        <p>I am looking for software developer roles in full-stack, data science or data analysis, and I am open to any company. Email is the fastest way to reach me.</p>
+        <div class="lines">
+          <a class="key line" href="mailto:vighneshkunjir1233@gmail.com">
+            <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m3 5.5 7 5.5 7-5.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span class="txt"><span class="t1">Email</span><span class="t2">vighneshkunjir1233@gmail.com</span></span>
+          </a>
+          <a class="key line" href="https://www.linkedin.com/in/vighnesh-kunjir-1b7a3a27a" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M4.2 7.4h2.9V16H4.2V7.4Zm1.5-4.3a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4ZM8.9 7.4h2.8v1.2h.04c.39-.74 1.34-1.5 2.76-1.5 2.95 0 3.5 1.94 3.5 4.46V16h-2.9v-3.9c0-.93-.02-2.13-1.3-2.13-1.3 0-1.5 1.01-1.5 2.06V16H8.9V7.4Z"/></svg>
+            <span class="txt"><span class="t1">LinkedIn</span><span class="t2">in/vighnesh-kunjir-1b7a3a27a</span></span>
+          </a>
+          <a class="key line" href="https://github.com/VighneshKunjir" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M10 1.8a8.2 8.2 0 0 0-2.6 16c.4.07.56-.18.56-.4v-1.4c-2.28.5-2.76-1.1-2.76-1.1-.37-.95-.91-1.2-.91-1.2-.75-.51.06-.5.06-.5.82.06 1.26.85 1.26.85.73 1.26 1.92.9 2.39.68.07-.53.29-.9.52-1.1-1.82-.2-3.74-.91-3.74-4.06 0-.9.32-1.63.85-2.2-.09-.21-.37-1.04.08-2.17 0 0 .69-.22 2.25.84a7.8 7.8 0 0 1 4.1 0c1.56-1.06 2.25-.84 2.25-.84.45 1.13.17 1.96.08 2.17.53.57.85 1.3.85 2.2 0 3.16-1.92 3.85-3.75 4.05.3.25.56.75.56 1.51v2.24c0 .22.15.48.57.4A8.2 8.2 0 0 0 10 1.8Z"/></svg>
+            <span class="txt"><span class="t1">GitHub</span><span class="t2">VighneshKunjir</span></span>
+          </a>
+        </div>
+        <div class="copy-row">
+          <button class="key" id="copyMail" type="button">
+            <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="6.5" y="6.5" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 6.5v-2a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.6"/></svg>Copy email address
+          </button>
+          <span class="toast" id="toast" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Vighnesh Kunjir &middot; Pune, India</span>
+    <span>Hand-built in HTML, CSS and JavaScript</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+  var arrow = '<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* Readout content per project key */
+  var projects = {
+    argocast:{ name:"ArgoCast", kind:"2026 / research",
+      line:"Explainable forecasting of ocean temperature and salinity profiles from Argo floats in the Arabian Sea.",
+      rows:[["Forecasts","next profile, 16 depths, about 10 days ahead"],["Data","36,164 checked profiles from 321 floats"],["Stands out","physically stable in 99.96%+ of forecasts"]],
+      repo:"https://github.com/VighneshKunjir/ArgoCast" },
+    tetris:{ name:"Voice Tetris", kind:"2026 / real-time",
+      line:"Tetris you play by talking. Spoken commands become key presses, all offline.",
+      rows:[["Input","speech, recognised locally with Vosk"],["Latency","about 50 to 80 ms, word to key press"],["Works with","built-in Pygame game or any Tetris"]],
+      repo:"https://github.com/VighneshKunjir/Voice-Tetris" },
+    food:{ name:"Food Waste Prediction System", kind:"2025 / applied ML",
+      line:"Predicts restaurant food waste so kitchens can plan quantities and waste less.",
+      rows:[["Models","linear, tree, boosting, neural net, ensemble"],["Output","7-day forecast with confidence intervals"],["Scale","many restaurants, each with its own models"]],
+      repo:"https://github.com/VighneshKunjir/Food-Waste-Prediction-System" },
+    snake:{ name:"DQN Snake Game AI", kind:"2026 / reinforcement learning",
+      line:"An agent that teaches itself Snake through trial, error and rewards.",
+      rows:[["Method","Deep Q-Network in PyTorch"],["Sees","11 signals: danger, direction, food"],["Compared to","random and rule-based agents"]],
+      repo:"https://github.com/VighneshKunjir/RL-DQN-Snake-game-ai" },
+    ecom:{ name:"E-Commerce Landing Page", kind:"2024 / front end",
+      line:"A responsive storefront landing page with client-side routing.",
+      rows:[["Built with","React, React Router"],["Setup","Create React App"],["Layout","adapts from phone to desktop"]],
+      repo:"https://github.com/VighneshKunjir/E-commerce-Landing-page" },
+    guides:{ name:"PC Gaming Technical Guides", kind:"ongoing / writing",
+      line:"Helping PC players download, set up and run games safely, mostly multiplayer and co-op.",
+      rows:[["Covers","download, setup, fixes, co-op"],["Safety","avoiding malware, viruses, phishing"],["Style","warnings first, numbered steps"]],
+      repo:"https://discord.gg/7Ms7JCqw2", repoText:"Join the Discord" }
+  };
+
+  var well = document.getElementById("well");
+  var screen = document.getElementById("screen");
+  var defaultScreen = screen.innerHTML;
+  var pkeys = document.querySelectorAll(".pkey");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function redraw(){
+    if(reduce) return;
+    well.classList.remove("redraw"); void well.offsetWidth; well.classList.add("redraw");
+  }
+  function show(id){
+    if(!id){ screen.innerHTML = defaultScreen; redraw(); return; }
+    var p = projects[id];
+    var rows = p.rows.map(function(r){ return "<li><b>"+esc(r[0])+"</b><span>"+esc(r[1])+"</span></li>"; }).join("");
+    var links = '<a href="#p-'+id+'">Read the full write-up</a>' + (p.repo ? '<a href="'+p.repo+'" target="_blank" rel="noopener">'+esc(p.repoText || "View code")+arrow+'</a>' : "");
+    screen.innerHTML = '<div class="screen-head"><h2>'+esc(p.name)+'</h2><span class="kind">'+esc(p.kind)+'</span></div>' +
+      "<p>"+esc(p.line)+'</p><ul class="readout">'+rows+'</ul><div class="screen-links">'+links+"</div>";
+    redraw();
+  }
+  pkeys.forEach(function(k){
+    k.addEventListener("click", function(){
+      var on = k.getAttribute("aria-pressed") !== "true";
+      pkeys.forEach(function(x){ x.setAttribute("aria-pressed", String(on && x === k)); });
+      show(on ? k.dataset.p : null);
+      if(window.matchMedia && window.matchMedia("(max-width:520px)").matches) well.scrollIntoView({block:"nearest", behavior: reduce ? "auto" : "smooth"});
+    });
+  });
+
+  /* Skills */
+  var groups = [
+    {name:"Languages and data", items:["Python","JavaScript","pandas","Time series","Machine learning"]},
+    {name:"AI and retrieval", items:["RAG","LangGraph","pgvector","LSTM / GRU / Transformer"]},
+    {name:"Back end and infra", items:["FastAPI","PostgreSQL","PostGIS","Redis","Prefect","Git"]},
+    {name:"Front end", items:["React","React Router","Next.js","Three.js","CesiumJS","Streamlit","HTML","CSS"]}
+  ];
+  var banks = document.getElementById("banks");
+  var note = document.getElementById("skillNote");
+  var plates = document.querySelectorAll(".plate");
+  banks.innerHTML = groups.map(function(g){
+    return '<div class="bank"><h3>'+esc(g.name)+'</h3><div class="list">' + g.items.map(function(s){
+      return '<button class="key sk" type="button" aria-pressed="false" data-s="'+esc(s)+'"><span class="led" aria-hidden="true"></span>'+esc(s)+"</button>";
+    }).join("") + "</div></div>";
+  }).join("");
+
+  var active = null;
+  banks.addEventListener("click", function(e){
+    var b = e.target.closest(".sk"); if(!b) return;
+    active = (active === b.dataset.s) ? null : b.dataset.s;
+    banks.querySelectorAll(".sk").forEach(function(x){ x.setAttribute("aria-pressed", String(x.dataset.s === active)); });
+    var hits = [];
+    plates.forEach(function(pl){
+      var has = !!active && pl.dataset.skills.split("|").indexOf(active) !== -1;
+      pl.classList.toggle("lit", has);
+      pl.classList.toggle("dim", !!active && !has);
+      if(has) hits.push(pl.querySelector("h3").textContent);
+    });
+    if(!active){ note.textContent = ""; return; }
+    if(active === "Git"){ note.innerHTML = "<b>Git</b>: every project here is version-controlled on GitHub."; plates.forEach(function(pl){ pl.classList.remove("dim"); }); return; }
+    note.innerHTML = hits.length
+      ? "<b>"+esc(active)+"</b> is used in " + esc(hits.join(", ")) + "."
+      : "<b>"+esc(active)+"</b> is not in the public projects above.";
+  });
+
+  /* Theme rocker */
+  var rocker = document.getElementById("theme");
+  var root = document.documentElement;
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function isDark(){ var t = root.getAttribute("data-theme"); return t ? t === "dark" : !!(mq && mq.matches); }
+  function syncRocker(){ rocker.setAttribute("aria-checked", String(isDark())); }
+  rocker.addEventListener("click", function(){
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem("vk-theme", next); }catch(e){}
+    syncRocker();
+  });
+  if(mq && mq.addEventListener) mq.addEventListener("change", syncRocker);
+  syncRocker();
+
+  /* Copy email */
+  var toast = document.getElementById("toast");
+  var mail = "vighneshkunjir1233@gmail.com";
+  document.getElementById("copyMail").addEventListener("click", function(){
+    var ok = function(){ toast.textContent = "Copied to clipboard"; setTimeout(function(){ toast.textContent = ""; }, 2000); };
+    var fail = function(){ toast.textContent = "Could not copy. The address is " + mail; };
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(mail).then(ok, fail);
+      else fail();
+    }catch(e){ fail(); }
+  });
+
+  /* Nav: press the key for the section in view */
+  var navLinks = document.querySelectorAll(".nav a");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting) navLinks.forEach(function(a){ a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id); });
+      });
+    }, {rootMargin:"-45% 0px -50% 0px"});
+    document.querySelectorAll("main section[id]").forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
