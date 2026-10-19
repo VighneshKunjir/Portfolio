@@ -29,6 +29,7 @@
   --accent-ink:#a8340c;
   --led-off:#c3cbc6;
   --cool:#1f8796;
+  --sheen:rgba(255,255,255,.55);
   --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body:"Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
   --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
@@ -43,14 +44,14 @@
   :root:not([data-theme="light"]){
     --ground:#262b29; --hi:#333a37; --lo:#181c1a;
     --ink:#e6ece8; --ink-2:#a7b1ab;
-    --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e; --cool:#5fcfdc;
+    --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e; --cool:#5fcfdc; --sheen:rgba(255,255,255,.28);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --ground:#262b29; --hi:#333a37; --lo:#181c1a;
   --ink:#e6ece8; --ink-2:#a7b1ab;
-  --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e; --cool:#5fcfdc;
+  --led:#ff6a3a; --accent-ink:#ff8a5c; --led-off:#3a413e; --cool:#5fcfdc; --sheen:rgba(255,255,255,.28);
   color-scheme:dark;
 }
 
@@ -118,19 +119,23 @@ p{margin:0}
 .plate.landed{box-shadow:var(--inset)}
 .plate.landed .led, .key.lit .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55)}
 
+/* Skills: a soft band of light glides across the panel while it is on screen */
+.banks{position:relative}
+.banks::after{content:""; position:absolute; inset:-12px 0; z-index:2; pointer-events:none; opacity:0;
+  background:linear-gradient(100deg, transparent 38%, var(--sheen) 50%, transparent 62%) no-repeat;
+  background-size:300% 100%; background-position:110% 0; mix-blend-mode:soft-light;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  transition:opacity .8s ease}
+.banks.sheen::after{opacity:1; animation:sheen 7s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes sheen{0%{background-position:110% 0} 60%, 100%{background-position:-10% 0}}
 /* Hover: standby LED on keys, outbound arrows nudge, Vk glitches */
 .pkey:hover:not([aria-pressed="true"]) .led, .sk:hover:not([aria-pressed="true"]) .led{background:color-mix(in srgb, var(--led) 45%, var(--led-off))}
 .arr{transition:transform .25s var(--ease)}
 a:hover .arr, a:focus-visible .arr{transform:translate(2px, -2px)}
 .mono-key::before, .mono-key::after{display:grid; place-items:center}
 
-/* Scroll: panels scan in, keys extrude out of the surface */
-.pre-scan{clip-path:inset(0 100% 0 0)}
-.pre-flush{box-shadow:none !important}
-.scan-in{animation:scan-in .62s var(--ease) both}
-.extrude{animation:extrude .5s var(--ease) both}
-@keyframes scan-in{from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)}}
-@keyframes extrude{from{box-shadow:0 0 0 transparent, 0 0 0 transparent; transform:translateY(2px)}}
+
 @media (max-width:760px){.nav{display:none} .rocker .lbl{display:none}}
 
 /* Console (first viewport) */
@@ -204,7 +209,7 @@ main{overflow-x:clip}
 }
 
 /* Power-on: LEDs scan across the keys */
-.pkey.scan .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55); transition-duration:.05s}
+.key.scan .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55); transition-duration:.05s}
 
 /* Theme switch: new theme spreads from the switch */
 ::view-transition-old(root), ::view-transition-new(root){animation:none; mix-blend-mode:normal}
@@ -866,51 +871,43 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
       });
     });
 
-    /* Scroll: panels scan in column by column, keys extrude out of the surface */
+    /* Scroll: contact keys rise smoothly from the surface each time they come into view;
+       the skills panel gets a slow light sweep while it is on screen */
     if("IntersectionObserver" in window){
-      var groups = [];
-      plates.forEach(function(pl){ groups.push({el:pl, scan:[].slice.call(pl.children), flush:[].slice.call(pl.querySelectorAll(".key"))}); });
-      banks.querySelectorAll(".bank").forEach(function(b){ groups.push({el:b, scan:[b.querySelector("h3")], flush:[].slice.call(b.querySelectorAll(".sk"))}); });
-      document.querySelectorAll(".stop").forEach(function(st){ groups.push({el:st, scan:[st], flush:[]}); });
-      var lines = document.querySelector(".lines");
-      groups.push({el:lines, scan:[], flush:[].slice.call(lines.children).concat([copyBtn])});
+      var rise = function(k, delay){
+        if(k._rise) k._rise.cancel();
+        if(k.classList.contains("on")) return;
+        var cs = getComputedStyle(root), lo = cs.getPropertyValue("--lo").trim(), hi = cs.getPropertyValue("--hi").trim();
+        k._rise = k.animate([
+          {boxShadow:"0px 0px 0px "+lo+", 0px 0px 0px "+hi, transform:"translateY(4px)"},
+          {boxShadow:"5px 5px 11px "+lo+", -5px -5px 11px "+hi, transform:"translateY(0px)"}
+        ], {duration:1100, delay:delay, easing:"cubic-bezier(.22,1,.36,1)", fill:"backwards"});
+      };
+      /* Enter at 30% visible, reset once fully out of view */
+      var whenSeen = function(el, ratio, onEnter, onLeave){
+        new IntersectionObserver(function(es){
+          es.forEach(function(en){
+            if(en.intersectionRatio >= ratio){ if(!el._in){ el._in = true; onEnter(); } }
+            else if(!en.isIntersecting && el._in){ el._in = false; if(onLeave) onLeave(); }
+          });
+        }, {threshold:[0, ratio]}).observe(el);
+      };
 
-      var play = function(x, cls, pre, delay){
-        x.style.animationDelay = delay + "ms";
-        x.classList.add(cls); x.classList.remove(pre);
-        x.addEventListener("animationend", function h(e){
-          if(e.target !== x) return;
-          x.classList.remove(cls); x.style.animationDelay = "";
-          x.removeEventListener("animationend", h);
-        });
-      };
-      var reveal = function(g){
-        g.scan.forEach(function(x, i){ play(x, "scan-in", "pre-scan", i * 80); });
-        g.flush.forEach(function(x, i){ play(x, "extrude", "pre-flush", Math.min(160 + i * 45, 640)); });
-      };
-      var seen = new IntersectionObserver(function(es){
-        es.forEach(function(en){
-          if(en.isIntersecting || en.boundingClientRect.top < 0){
-            var g = groups.filter(function(x){ return x.el === en.target; })[0];
-            if(g){ reveal(g); seen.unobserve(en.target); }
-          }
-        });
-      }, {rootMargin:"0px 0px -8% 0px"});
-      groups.forEach(function(g){
-        if(g.el.getBoundingClientRect().top < innerHeight) return;
-        g.scan.forEach(function(x){ x.classList.add("pre-scan"); });
-        g.flush.forEach(function(x){ x.classList.add("pre-flush"); });
-        seen.observe(g.el);
+      var contactKeys = [].slice.call(document.querySelectorAll(".lines .key")).concat([copyBtn]);
+      whenSeen(document.querySelector(".lines"), .3, function(){
+        contactKeys.forEach(function(k, i){ rise(k, 100 + i * 200); });
+      });
+
+      whenSeen(banks, .3, function(){ banks.classList.add("sheen"); }, function(){ banks.classList.remove("sheen"); });
+      /* Section headings glitch every time they come into view */
+      document.querySelectorAll(".sec-head h2, .contact h2").forEach(function(h){
+        whenSeen(h, .8, function(){ glitch(h); });
       });
     }
 
     var heroVisible = true;
     if("IntersectionObserver" in window){
       new IntersectionObserver(function(es){ heroVisible = es[0].isIntersecting; }).observe(document.querySelector(".console"));
-      var heads = new IntersectionObserver(function(es){
-        es.forEach(function(en){ if(en.isIntersecting){ glitch(en.target); heads.unobserve(en.target); } });
-      }, {threshold:.8});
-      document.querySelectorAll(".sec-head h2, .contact h2").forEach(function(h){ heads.observe(h); });
     }
     (function idle(){
       setTimeout(function(){
