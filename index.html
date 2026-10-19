@@ -99,7 +99,24 @@ p{margin:0}
 .rocker .track{position:relative; width:58px; height:30px; border-radius:999px; box-shadow:var(--inset-sm); flex:none}
 .rocker .knob{position:absolute; top:4px; left:4px; width:22px; height:22px; border-radius:50%; background:var(--ground); box-shadow:3px 3px 6px var(--lo), -3px -3px 6px var(--hi); transition:transform .3s var(--ease); display:grid; place-items:center}
 .rocker[aria-checked="true"] .knob{transform:translateX(28px)}
-.rocker .knob svg{width:12px; height:12px}
+.rocker .knob svg{width:12px; height:12px; grid-area:1/1; transition:opacity .3s var(--ease), transform .45s var(--ease)}
+.rocker .knob{display:grid}
+.rocker .moon{opacity:0; transform:rotate(90deg) scale(.6)}
+.rocker[aria-checked="true"] .moon{opacity:1; transform:none}
+.rocker[aria-checked="true"] .sun{opacity:0; transform:rotate(-90deg) scale(.6)}
+
+/* Scroll level meter: segmented LED strip across the top of the window */
+.meter{position:fixed; top:0; left:0; right:0; height:3px; z-index:40; pointer-events:none;
+  background:repeating-linear-gradient(90deg, var(--led) 0 18px, transparent 18px 22px);
+  clip-path:inset(0 calc(100% - var(--p, 0) * 100%) 0 0)}
+
+/* Live indicator breathes */
+.status .led.on{animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.4}}
+
+/* A project you jumped to sinks and lights for a moment */
+.plate.landed{box-shadow:var(--inset)}
+.plate.landed .led, .key.lit .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55)}
 @media (max-width:760px){.nav{display:none} .rocker .lbl{display:none}}
 
 /* Console (first viewport) */
@@ -307,6 +324,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
+<div class="meter" id="meter" aria-hidden="true"></div>
 <header class="rail">
   <div class="wrap">
     <a class="key mono-key" href="#top" aria-label="Vighnesh Kunjir, back to top">Vk</a>
@@ -321,7 +339,8 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     <button class="rocker" id="theme" type="button" role="switch" aria-checked="false">
       <span class="lbl">Dark mode</span>
       <span class="track" aria-hidden="true"><span class="knob">
-        <svg viewBox="0 0 16 16" fill="none"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <svg class="sun" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="moon" viewBox="0 0 16 16" fill="none"><path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
       </span></span>
     </button>
   </div>
@@ -580,7 +599,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
         </div>
         <div class="copy-row">
           <button class="key" id="copyMail" type="button">
-            <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="6.5" y="6.5" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 6.5v-2a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.6"/></svg>Copy email address
+            <svg class="icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="6.5" y="6.5" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 6.5v-2a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.6"/></svg>Copy email address<span class="led" aria-hidden="true"></span>
           </button>
           <span class="toast" id="toast" aria-live="polite"></span>
         </div>
@@ -715,9 +734,10 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     var b = e.target.closest(".sk"); if(!b) return;
     active = (active === b.dataset.s) ? null : b.dataset.s;
     banks.querySelectorAll(".sk").forEach(function(x){ x.setAttribute("aria-pressed", String(x.dataset.s === active)); });
-    var hits = [];
+    var hits = [], step = 0;
     plates.forEach(function(pl){
       var has = !!active && pl.dataset.skills.split("|").indexOf(active) !== -1;
+      pl.style.transitionDelay = (has && !reduce) ? (step++ * 90) + "ms" : "0ms";
       pl.classList.toggle("lit", has);
       pl.classList.toggle("dim", !!active && !has);
       if(has) hits.push(pl.querySelector("h3").textContent);
@@ -757,8 +777,13 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   /* Copy email */
   var toast = document.getElementById("toast");
   var mail = "vighneshkunjir1233@gmail.com";
-  document.getElementById("copyMail").addEventListener("click", function(){
-    var ok = function(){ toast.textContent = "Copied to clipboard"; setTimeout(function(){ toast.textContent = ""; }, 2000); };
+  var copyBtn = document.getElementById("copyMail");
+  copyBtn.addEventListener("click", function(){
+    var ok = function(){
+      toast.textContent = "Copied to clipboard";
+      copyBtn.classList.add("on", "lit");
+      setTimeout(function(){ toast.textContent = ""; copyBtn.classList.remove("on", "lit"); }, 1800);
+    };
     var fail = function(){ toast.textContent = "Could not copy. The address is " + mail; };
     try{
       if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(mail).then(ok, fail);
@@ -776,6 +801,25 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     }, {rootMargin:"-45% 0px -50% 0px"});
     document.querySelectorAll("main section[id]").forEach(function(s){ io.observe(s); });
   }
+
+  /* Scroll level meter */
+  var meter = document.getElementById("meter"), meterQueued = false;
+  function setMeter(){
+    meterQueued = false;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    meter.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+  }
+  addEventListener("scroll", function(){ if(!meterQueued){ meterQueued = true; requestAnimationFrame(setMeter); } }, {passive:true});
+  addEventListener("resize", setMeter);
+  setMeter();
+
+  /* Jumping from the readout to a write-up: the plate sinks and lights briefly */
+  well.addEventListener("click", function(e){
+    var a = e.target.closest('a[href^="#p-"]'); if(!a) return;
+    var pl = document.querySelector(a.getAttribute("href")); if(!pl) return;
+    pl.classList.remove("landed");
+    setTimeout(function(){ pl.classList.add("landed"); setTimeout(function(){ pl.classList.remove("landed"); }, 1600); }, reduce ? 0 : 450);
+  });
 
   /* Motion: power-on, idle name glitch, headings glitch in once */
   if(!reduce){
