@@ -117,6 +117,20 @@ p{margin:0}
 /* A project you jumped to sinks and lights for a moment */
 .plate.landed{box-shadow:var(--inset)}
 .plate.landed .led, .key.lit .led{background:var(--led); box-shadow:inset -1px -1px 2px rgba(0,0,0,.28), inset 1px 1px 2px rgba(255,255,255,.55)}
+
+/* Hover: standby LED on keys, outbound arrows nudge, Vk glitches */
+.pkey:hover:not([aria-pressed="true"]) .led, .sk:hover:not([aria-pressed="true"]) .led{background:color-mix(in srgb, var(--led) 45%, var(--led-off))}
+.arr{transition:transform .25s var(--ease)}
+a:hover .arr, a:focus-visible .arr{transform:translate(2px, -2px)}
+.mono-key::before, .mono-key::after{display:grid; place-items:center}
+
+/* Scroll: panels scan in, keys extrude out of the surface */
+.pre-scan{clip-path:inset(0 100% 0 0)}
+.pre-flush{box-shadow:none !important}
+.scan-in{animation:scan-in .62s var(--ease) both}
+.extrude{animation:extrude .5s var(--ease) both}
+@keyframes scan-in{from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)}}
+@keyframes extrude{from{box-shadow:0 0 0 transparent, 0 0 0 transparent; transform:translateY(2px)}}
 @media (max-width:760px){.nav{display:none} .rocker .lbl{display:none}}
 
 /* Console (first viewport) */
@@ -424,8 +438,8 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
           <div class="plate-side">
             <ul class="stack"><li>Python</li><li>PyTorch</li><li>FastAPI</li><li>React 19</li><li>TypeScript</li><li>TEOS-10</li></ul>
             <div class="plate-links">
-              <a class="key" href="https://github.com/VighneshKunjir/ArgoCast" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-              <a class="key" href="https://doi.org/10.5281/zenodo.23422343" target="_blank" rel="noopener">Zenodo archive<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://github.com/VighneshKunjir/ArgoCast" target="_blank" rel="noopener">View code<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://doi.org/10.5281/zenodo.23422343" target="_blank" rel="noopener">Zenodo archive<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -446,7 +460,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
           <div class="plate-side">
             <ul class="stack"><li>Python</li><li>Vosk</li><li>Pygame</li><li>pynput</li><li>NumPy</li></ul>
             <div class="plate-links">
-              <a class="key" href="https://github.com/VighneshKunjir/Voice-Tetris" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://github.com/VighneshKunjir/Voice-Tetris" target="_blank" rel="noopener">View code<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -468,7 +482,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
           <div class="plate-side">
             <ul class="stack"><li>Python</li><li>scikit-learn</li><li>XGBoost</li><li>LightGBM</li><li>CatBoost</li><li>PyTorch</li><li>pandas</li></ul>
             <div class="plate-links">
-              <a class="key" href="https://github.com/VighneshKunjir/Food-Waste-Prediction-System" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://github.com/VighneshKunjir/Food-Waste-Prediction-System" target="_blank" rel="noopener">View code<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -489,7 +503,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
           <div class="plate-side">
             <ul class="stack"><li>Python</li><li>PyTorch</li><li>Pygame</li><li>NumPy</li></ul>
             <div class="plate-links">
-              <a class="key" href="https://github.com/VighneshKunjir/RL-DQN-Snake-game-ai" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://github.com/VighneshKunjir/RL-DQN-Snake-game-ai" target="_blank" rel="noopener">View code<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -509,7 +523,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
           <div class="plate-side">
             <ul class="stack"><li>React</li><li>React Router</li><li>JavaScript</li><li>CSS</li></ul>
             <div class="plate-links">
-              <a class="key" href="https://github.com/VighneshKunjir/E-commerce-Landing-page" target="_blank" rel="noopener">View code<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://github.com/VighneshKunjir/E-commerce-Landing-page" target="_blank" rel="noopener">View code<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -534,7 +548,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
 2. Follow the setup steps in order
 3. Test the game before inviting friends</pre>
             <div class="plate-links">
-              <a class="key" href="https://discord.gg/7Ms7JCqw2" target="_blank" rel="noopener">Join the Discord<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              <a class="key" href="https://discord.gg/7Ms7JCqw2" target="_blank" rel="noopener">Join the Discord<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
           </div>
         </article>
@@ -619,7 +633,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
 (function(){
   "use strict";
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
-  var arrow = '<svg class="icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var arrow = '<svg class="icon arr" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   /* Readout content per project key */
   var projects = {
@@ -692,7 +706,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     el.classList.add("is-glitching");
     setTimeout(function(){ el.classList.remove("is-glitching"); }, 540);
   }
-  document.querySelectorAll(".id h1, .sec-head h2, .contact h2").forEach(function(el){
+  document.querySelectorAll(".id h1, .sec-head h2, .contact h2, .mono-key").forEach(function(el){
     el.classList.add("glitch"); el.setAttribute("data-text", el.textContent);
   });
   function show(id){
@@ -833,6 +847,62 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     if(document.fonts && document.fonts.ready) document.fonts.ready.then(powerOn); else powerOn();
 
     name.addEventListener("pointerenter", function(){ glitch(name); });
+    var vk = document.querySelector(".mono-key");
+    vk.addEventListener("pointerenter", function(){ glitch(vk); });
+
+    /* Hover: contact addresses decode from noise */
+    document.querySelectorAll(".line").forEach(function(l){
+      var t2 = l.querySelector(".t2"), text = t2.textContent, running = false;
+      l.setAttribute("aria-label", l.textContent.trim().replace(/\s+/g, " "));
+      l.addEventListener("pointerenter", function(){
+        if(running) return; running = true;
+        var t0 = performance.now();
+        (function frame(now){
+          var p = Math.min(1, (now - t0) / 380), cut = Math.floor(p * text.length), out = text.slice(0, cut);
+          for(var j = cut; j < text.length; j++) out += noise.charAt((Math.random() * noise.length) | 0);
+          t2.textContent = out;
+          if(p < 1) requestAnimationFrame(frame); else { t2.textContent = text; running = false; }
+        })(t0);
+      });
+    });
+
+    /* Scroll: panels scan in column by column, keys extrude out of the surface */
+    if("IntersectionObserver" in window){
+      var groups = [];
+      plates.forEach(function(pl){ groups.push({el:pl, scan:[].slice.call(pl.children), flush:[].slice.call(pl.querySelectorAll(".key"))}); });
+      banks.querySelectorAll(".bank").forEach(function(b){ groups.push({el:b, scan:[b.querySelector("h3")], flush:[].slice.call(b.querySelectorAll(".sk"))}); });
+      document.querySelectorAll(".stop").forEach(function(st){ groups.push({el:st, scan:[st], flush:[]}); });
+      var lines = document.querySelector(".lines");
+      groups.push({el:lines, scan:[], flush:[].slice.call(lines.children).concat([copyBtn])});
+
+      var play = function(x, cls, pre, delay){
+        x.style.animationDelay = delay + "ms";
+        x.classList.add(cls); x.classList.remove(pre);
+        x.addEventListener("animationend", function h(e){
+          if(e.target !== x) return;
+          x.classList.remove(cls); x.style.animationDelay = "";
+          x.removeEventListener("animationend", h);
+        });
+      };
+      var reveal = function(g){
+        g.scan.forEach(function(x, i){ play(x, "scan-in", "pre-scan", i * 80); });
+        g.flush.forEach(function(x, i){ play(x, "extrude", "pre-flush", Math.min(160 + i * 45, 640)); });
+      };
+      var seen = new IntersectionObserver(function(es){
+        es.forEach(function(en){
+          if(en.isIntersecting || en.boundingClientRect.top < 0){
+            var g = groups.filter(function(x){ return x.el === en.target; })[0];
+            if(g){ reveal(g); seen.unobserve(en.target); }
+          }
+        });
+      }, {rootMargin:"0px 0px -8% 0px"});
+      groups.forEach(function(g){
+        if(g.el.getBoundingClientRect().top < innerHeight) return;
+        g.scan.forEach(function(x){ x.classList.add("pre-scan"); });
+        g.flush.forEach(function(x){ x.classList.add("pre-flush"); });
+        seen.observe(g.el);
+      });
+    }
 
     var heroVisible = true;
     if("IntersectionObserver" in window){
